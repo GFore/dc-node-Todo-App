@@ -1,0 +1,24 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "debug": "node --inspect-brk index.js",
+    "dev": "nodemon index.js",
+    "reset-db": "dropdb node-todo-app-db; createdb node-todo-app-db; psql -f schema.sql node-todo-app-db; psql -f seed.sql node-todo-app-db",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.18.6"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "pg-promise": "^8.5.1"
+  }
+}
