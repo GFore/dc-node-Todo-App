@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
+app.use(express.static('public'));
+
 // Configure body-parser to read data sent by HTML form tags
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -12,16 +14,24 @@ app.use(bodyParser.json());
 
 const Todo = require('./models/Todo');
 const User = require('./models/User');
+const page = require('./views/page');
+const userList = require('./views/userList');
+
+app.get('/', (req, res) => {
+    const thePage = page('hey there!');
+    res.send(thePage);
+})
 
 // Listen for a GET request
 app.get('/users', (req, res) => {
     User.getAll()
         .then(allUsers => {
-            res.send(allUsers);
+            //res.send(allUsers);
+            res.send(page(userList(allUsers)));
         })
 });
 
-//Liset for a POST request
+//Listen for a POST request
 app.post('/users', (req, res) => {
     //console.log(req.body);
     //res.send('ok');
@@ -32,9 +42,11 @@ app.post('/users', (req, res) => {
         })
 });
 
+// Using POST to do update since HTML forms can
+// only do GET and POST (not PUT or DELETE)
 app.post('/users/:id(\\d+)', (req, res) => {
-    const id = req.params.id;
-    const newName = req.body.name;
+    const id = req.params.id;           // passed in from params
+    const newName = req.body.name;      // passed in from body
     console.log(newName + " " + id);
     
     // get the user by their id
